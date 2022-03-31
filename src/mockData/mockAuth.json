@@ -1,0 +1,19 @@
+{
+    "authResponse": {
+    "aud": [""],
+    "auth_time": 1634138581,
+    "email": "Joel.Lingard@asda.co.uk",
+    "exp": 1634140381,
+    "iam-token": "",
+    "iat": 1634138581,
+    "isAdmin": true,
+    "iss": "https://idp.prod.sso.platform.prod.walmart.com/platform-sso-server/",
+    "loginId": "uk\\j0l038l",
+    "name": "Rhys Haines",
+    "nonce": "8f5af422-a179-41fb-a5ac-a463bfe6caa4",
+    "scope": "openid",
+    "sub": "dce5d617-a571-4a10-9fb7-b57bd0371060",
+    "typ": "Bearer"
+    },
+    "userRoleResponse": "OTHER"
+}
