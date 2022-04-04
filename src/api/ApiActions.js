@@ -4,14 +4,11 @@ import { useActionStore } from "../store"
 
 
 export const GetAllActions = async () => {
-    console.log("this will always run")
-    const setActions = useActionStore((state) => state.setActions)
+    //const setActions = useActionStore((state) => state.setActions)
+    const setActions = useActionStore.getState().setActions
     try{
-        console.log("running this")
-        const response = await newsflashServices.get("/api/v1/actions", {})
-        console.log("its running this")
-       //return console.log(responce.data)
-       return setActions(response)
+        const response = await newsflashServices.get("/api/actions", {})
+         return setActions(response.data)
     }
     catch(err){
         console.log(err)

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Navigation from './components/Navigation';
-import './index.css';
+import './css/index.css';
 
 
 const App = () => {
