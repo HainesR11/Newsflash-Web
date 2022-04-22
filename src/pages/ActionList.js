@@ -1,40 +1,29 @@
 import React, { useEffect } from "react";
 import NavArrow from "../components/NavArrow";
 import ActionListItem from "../components/ActionListItem";
-import { Link } from "react-router-dom";
 import mockAuth from "../mockData/mockAuth.json"
 import { useActionStore, useModalStore } from "../store";
 import AddActivityModal from "../components/AddActivityModal";
-import { GetAllActions } from "../api/ApiActions";
+import { GetAllActions, getBuckets } from "../api/ApiActions";
 import moment from "moment";
 import Buckets from "../components/buckets";
+import Switch from "../components/toggle";
+import TaskModal from "../components/TaskModal";
 
 const ActionList = () => {
     const arrowNavs = ["Ambient", "Action 12"]
 
-
-    const buckets = [
-        "Ambient",
-        "Back Office",
-        "Fresh",
-        "General Merchandising",
-        "GMS",
-        "Health Care",
-        "Online",
-        "Services"
-    ]
-
-
     useEffect(() => {
-        GetAllActions()
+        GetAllActions();
+        getBuckets();
     }, [])
 
     const addModal = useModalStore((state) => state.showAddModal)
+    const taskModal = useModalStore((state) => state.showTaskModal)
     const toggle = useModalStore((state) => state.toggleAddModal)
     const actions = useActionStore((state) => state.actions)
     const selectedBucket = useActionStore((state) => state.selectedBucket)
-    const setSelectedBucket = useActionStore((state) => state.setSelectedBucket)
-    const toggleSwitch = useModalStore((state) => state.toggleSwitch)
+    const completeSwitch = useModalStore((state) => state.completeSwitch)
 
     const auth = mockAuth.authResponse
 
@@ -44,7 +33,7 @@ const ActionList = () => {
             const total = item.tasks.length
             const percent = (completed / total) * 100
             return (
-                item.bucket === selectedBucket && (toggleSwitch ? percent === 100 : percent < 100 )
+                item.bucket === selectedBucket && (completeSwitch ? percent === 100 : percent < 100)
             )
         })
     }
@@ -52,21 +41,33 @@ const ActionList = () => {
     return (
         <div style={ { backgroundColor: "#282c34" } }>
             { addModal && <AddActivityModal show={ addModal } /> }
+            { taskModal && <TaskModal /> }
             <div style={ { width: "96vw", height: "100vh", display: "flex", flexDirection: "row" } }>
-                <div style={{height: "100vh"}} id={ "Buckets" }>
-                    <Buckets buckets={buckets}/>
+                <div style={ { height: "100vh" } } id={ "Buckets" }>
+                    <Buckets />
                 </div>
-                <div style={ { height: "100vh", width: "84vw", backgroundColor: "white", borderTopLeftRadius: "20px", borderBottomLeftRadius: "20px", overflow: "auto" } }>
+                <div style={ { height: "100vh", width: "85vw", backgroundColor: "white", borderTopLeftRadius: "20px", borderBottomLeftRadius: "20px", paddingBottom: "1vh" } }>
                     { !actions ? <div>
                         this is loading
                     </div> :
-                        <div style={ { display: "flex", flexDirection: "column", width: "84vw", height: "100vh" } }>
-                            <div style={ { width: "84vw", display: "flex", flexDirection: "row" } } key={ "NavArrow" }>
-                                { arrowNavs.map((text) => {
-                                    return (
-                                        <NavArrow NavText={ text } selectedBucket={ selectedBucket } />
-                                    )
-                                }) }
+                        <div style={ { display: "flex", flexDirection: "column", width: "85vw", height: "99vh", marginBottom: "1vh", overflow: "auto" } }>
+                            <div style={ { display: "flex", flexDirection: "row", justifyContent: "space-between", paddingRight: "1vw" } }>
+                                <div style={ { width: "84vw", display: "flex", flexDirection: "row" } } key={ "NavArrow" }>
+                                    { arrowNavs.map((text) => {
+                                        return (
+                                            <NavArrow NavText={ text } />
+                                        )
+                                    }) }
+
+                                </div>
+                                <div style={ { display: "flex", justifyContent: "center", width: "12vw", flexDirection: "row", color: "white", fontSize: "10px", } }>
+                                    <div style={ { color: "black", display: "flex", alignItems: "center", width: "6vw" } }>
+                                        Show Completed
+                                    </div>
+                                    <div style={ { display: "flex", height: "5vh", alignItems: "center", paddingTop: "13px" } }>
+                                        <Switch />
+                                    </div>
+                                </div>
                             </div>
                             <div style={ { width: "83vw", display: "flex", flexDirection: "row", justifyContent: "space-around", height: "30px" } }>
                                 <div style={ { width: "28vw", fontWeight: "bold" } }> Name </div>
@@ -85,7 +86,7 @@ const ActionList = () => {
                                     </div>
                                 </div>
                             }
-                            { filteredResults().sort((a, b) => moment(a.dueDate).isAfter(moment(b.dueDate))).map((action) => {
+                            { filteredResults().sort((dueDate) => moment(dueDate) - Date()).map((action) => {
                                 return (
                                     <ActionListItem item={ action } tasks={ action.tasks } auth={ auth } id={ action._id } />
                                 )
