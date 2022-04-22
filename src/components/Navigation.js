@@ -22,7 +22,7 @@ const NavLinks = () => {
 const Navigation = () => {
     return (
         <BrowserRouter>
-            <div style={ { display: "flex" } }>
+            <div style={ { display: "flex", backgroundColor: "#282c34", position: "fixed" } }>
                 <div>
                     <NavLinks />
                 </div>
