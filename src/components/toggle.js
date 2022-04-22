@@ -4,8 +4,8 @@ import { useModalStore } from '../store';
 
 const Switch = () => {
     
-    const toggleSwitch = useModalStore((state) => state.toggleSwitch)
-    const setToggleSwitch = useModalStore((state) => state.setToggleSwitch)
+    const completeSwitch = useModalStore((state) => state.completeSwitch)
+    const setCompleteSwitch = useModalStore((state) => state.setCompleteSwitch)
 
     return (
         <div>
@@ -13,9 +13,8 @@ const Switch = () => {
                 className="react-switch-checkbox"
                 id={ `react-switch-new` }
                 type="checkbox"
-                checked={toggleSwitch}
-                onChange={setToggleSwitch}
-                //onClick={() => setToggleSwitch(!toggleSwitch)}
+                checked={ completeSwitch}
+                onChange={setCompleteSwitch}
             />
             <label
                 className="react-switch-label"
