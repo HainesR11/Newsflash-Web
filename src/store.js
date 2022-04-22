@@ -4,15 +4,21 @@ import {devtools, persist} from "zustand/middleware"
 let modalStore = (set) => ({
     showAddModal: false,
     toggleAddModal: () => set((state) => ({showAddModal: !state.showAddModal})),
-    toggleSwitch: false,
-    setToggleSwitch: () => set((state) => ({toggleSwitch: !state.toggleSwitch}))
+    completeSwitch: false,
+    setCompleteSwitch: () => set((state) => ({completeSwitch: !state.completeSwitch})),
+    showTaskModal: false,
+    toggleTaskModaal: () => set((state) => ({showTaskModal: !state.showTaskModal}))
 })
 
 let actionStore = (set) => ({
     actions: [],
+    action: [],
     selectedBucket: "Ambient",
+    buckets: [],
     setActions: (records) => set(() => ({actions: records})),
-    setSelectedBucket: (bucket) => set(() => ({selectedBucket: bucket}))
+    setAction: (record) => set(() => ({action: record})),
+    setSelectedBucket: (bucket) => set(() => ({selectedBucket: bucket})),
+    setBuckets: (records) => set(() => ({buckets: records }))
 })
 
 
