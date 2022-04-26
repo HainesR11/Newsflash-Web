@@ -1,7 +1,8 @@
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import moment from "moment"
 import React, { useState } from "react"
-import { completeTask, getAction } from "../api/ApiActions"
+import { completeTask, GetAllActions } from "../api/ApiActions"
 
 import '../css/taskView.css'
 
@@ -9,11 +10,10 @@ const CheckBox = ({task, auth, tasks}) => {
 
     const [checked, setChecked] = useState(false)
 
-    const complete = () => {
+    const complete = async () => {
         setChecked(true)
-        console.log(task._id)
-        getAction(tasks._id)
-        //completeTask(tasks._id, Date, auth.name)
+        await completeTask(tasks._id, moment().format("ddd DD MMM yyyy"), auth.name, task._id)
+        GetAllActions()
     }
 
     return(
