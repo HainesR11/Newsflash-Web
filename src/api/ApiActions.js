@@ -14,17 +14,6 @@ export const GetAllActions = async () => {
     }
 }
 
-export const getAction = async (id) => {
-    const setAction = useActionStore.getState().setAction
-    try{
-        const responce = await newsflashServices.get("/api/actions/" + id, {})
-        console.log(responce.data)
-    }
-    catch (err) {
-        console.log(err)
-    }
-}
-
 export const getBuckets = async () => {
     const setBuckets = useActionStore.getState().setBuckets
     try {
@@ -36,9 +25,19 @@ export const getBuckets = async () => {
     }
 }
 
-export const completeTask = async (id, date, user) => {
+export const completeTask = async (id, date, user, taskId) => {
     try {
-        const responce = await newsflashServices.patch("/api/actions/" + id, {  body: {completedOn: date, comepletedBy: user} })
+        const responce = await newsflashServices.patch("/api/actions/" + id + "/" + taskId, { completedOn: date, comepletedBy: user} )
+        return console.log(responce)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+export const DeleteTask = async ( id, taskId) => {
+    try{ 
+        const responce = await newsflashServices.delete("/api/actions/" + id + "/" + taskId)
         return console.log(responce)
     }
     catch (err) {
