@@ -27,7 +27,7 @@ export const getBuckets = async () => {
 
 export const completeTask = async (id, date, user, taskId) => {
     try {
-        const responce = await newsflashServices.patch("/api/actions/" + id + "/" + taskId, { completedOn: date, comepletedBy: user} )
+        const responce = await newsflashServices.patch("/api/actions/" + id + "/" + taskId, { completedOn: date, comepletedBy: user })
         return console.log(responce)
     }
     catch (err) {
@@ -35,12 +35,12 @@ export const completeTask = async (id, date, user, taskId) => {
     }
 }
 
-export const DeleteTask = async ( id, taskId) => {
-    try{ 
-        const responce = await newsflashServices.delete("/api/actions/" + id + "/" + taskId)
-        return console.log(responce)
+export const DeleteTask = async (id, taskId) => {
+    try {
+        await newsflashServices.patch("/api/tasks/" + id + "/" + taskId)
+        return console.log("action Deleted")
     }
     catch (err) {
-        console.log(err)
+        console.log("this has hit an errre")
     }
 }
