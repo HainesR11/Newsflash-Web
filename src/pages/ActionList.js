@@ -3,12 +3,13 @@ import NavArrow from "../components/NavArrow";
 import ActionListItem from "../components/ActionListItem";
 import mockAuth from "../mockData/mockAuth.json"
 import { useActionStore, useModalStore } from "../store";
-import AddActivityModal from "../components/AddActivityModal";
+import AddActivityModal from "../components/Modal/AddActivityModal";
 import { GetAllActions, getBuckets } from "../api/ApiActions";
 import moment from "moment";
 import Buckets from "../components/buckets";
 import Switch from "../components/toggle";
-import TaskModal from "../components/TaskModal";
+import TaskModal from "../components/Modal/TaskModal";
+import DeleteModal from "../components/Modal/DeleteModal";
 
 const ActionList = () => {
     const arrowNavs = ["Ambient", "Action 12"]
@@ -24,6 +25,7 @@ const ActionList = () => {
     const actions = useActionStore((state) => state.actions)
     const selectedBucket = useActionStore((state) => state.selectedBucket)
     const completeSwitch = useModalStore((state) => state.completeSwitch)
+    const deleteModal = useModalStore((state) => state.showDeleteModal)
 
     const auth = mockAuth.authResponse
 
@@ -40,6 +42,7 @@ const ActionList = () => {
 
     return (
         <div style={ { backgroundColor: "#282c34" } }>
+            { deleteModal && <DeleteModal /> }
             { addModal && <AddActivityModal show={ addModal } /> }
             { taskModal && <TaskModal /> }
             <div style={ { width: "96vw", height: "100vh", display: "flex", flexDirection: "row" } }>
@@ -53,9 +56,9 @@ const ActionList = () => {
                         <div style={ { display: "flex", flexDirection: "column", width: "85vw", height: "99vh", marginBottom: "1vh", overflow: "auto" } }>
                             <div style={ { display: "flex", flexDirection: "row", justifyContent: "space-between", paddingRight: "1vw" } }>
                                 <div style={ { width: "84vw", display: "flex", flexDirection: "row" } } key={ "NavArrow" }>
-                                    { arrowNavs.map((text) => {
+                                    { arrowNavs.map((text, index) => {
                                         return (
-                                            <NavArrow NavText={ text } />
+                                            <NavArrow NavText={ text } key={index} />
                                         )
                                     }) }
 
@@ -86,9 +89,9 @@ const ActionList = () => {
                                     </div>
                                 </div>
                             }
-                            { filteredResults().sort((dueDate) => moment(dueDate) - Date()).map((action) => {
+                            { filteredResults().sort((dueDate) => moment(dueDate) - Date()).map((action, index) => {
                                 return (
-                                    <ActionListItem item={ action } tasks={ action.tasks } auth={ auth } id={ action._id } />
+                                    <ActionListItem item={ action } tasks={ action.tasks } auth={ auth } id={ action._id } key={index} />
                                 )
                             }) }
                         </div>
