@@ -3,11 +3,15 @@ import { faCircleCheck, faEdit, faTrash } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 import CheckBox from "./CheckBox";
+import { useModalStore } from "../store";
 
 const ActionListItem = ({ item, tasks, auth }) => {
     
     const [taskShow, setTaskShow] = useState(false)
-    const [taskAnimation, setTaskAnimation] = useState(false)
+    const toggleDeleteModal = useModalStore((state) => state.toggleDeleteModal)
+    const setId = useModalStore((state) => state.setId)
+    const setTaskName = useModalStore((state) => state.setTaskName)
+    const setTaskId = useModalStore((state) => state.setTaskId)
 
     const completed = tasks.filter((item) => { return item.completedOn }).length
     const total = tasks.length
@@ -23,6 +27,12 @@ const ActionListItem = ({ item, tasks, auth }) => {
         else return "1px solid black"
     }
 
+    const onClickDelete = (id, taskId, taskName) => {
+        setId(id)
+        setTaskId(taskId)
+        setTaskName(taskName)
+    }
+
     return (
         <div style={ { display: "flex", flexDirection: "column", width: "83vw", border: "1px solid black", paddingTop: "10px", paddingBottom: "10px", marginTop: "20px", borderRadius: "5px", marginLeft: "0.5vw", borderLeft: completeBorder(percent, moment(item.dueDate).isBefore(Date())) } }>
             <div style={ { display: "flex", marginLeft: "10px", justifyContent: "space-between", width: "73vw", alignItems: "center" } } onClick={ () => setTaskShow(!taskShow) }>
@@ -36,9 +46,9 @@ const ActionListItem = ({ item, tasks, auth }) => {
                     { percent } %
                 </div>
                 <div style={ { display: "flex", width: "10vw", flexDirection: "row-reverse", } }>
-                    { tasks.map((tasks) => {
+                    { tasks.map((tasks, index) => {
                         return (
-                            <div style={ { backgroundColor: "lightGrey", width: "2em", height: "2em", borderRadius: "1em", display: "flex", alignItems: "center", justifyContent: "center", marginRight: "-15px", border: "2px solid white" } }>
+                            <div style={ { backgroundColor: "lightGrey", width: "2em", height: "2em", borderRadius: "1em", display: "flex", alignItems: "center", justifyContent: "center", marginRight: "-15px", border: "2px solid white" } } key={index}>
                                 { tasks.assignedTo.map((assigned) => {
                                     return (
                                         assigned.charAt(0)
@@ -71,7 +81,7 @@ const ActionListItem = ({ item, tasks, auth }) => {
                         </div>
                         { tasks.map((task) => {
                             return (
-                                <div style={ { display: "flex", flexDirection: "row" } } onClick={ console.log(task.assignedTo) }>
+                                <div style={ { display: "flex", flexDirection: "row" } }>
                                     <div style={ { display: "flex", flexDirection: "row", width: "79vw", paddingTop: "5px", justifyContent: "space-around" } }>
                                         <div style={ { width: "10vw" } }>
                                             { task.taskName }
@@ -94,7 +104,7 @@ const ActionListItem = ({ item, tasks, auth }) => {
                                     { auth.isAdmin &&
                                         <div style={ { width: "5vw", display: "flex", justifyContent: "space-around" } } >
                                             <FontAwesomeIcon icon={ faEdit } style={ { cursor: "pointer" } } />
-                                            <FontAwesomeIcon icon={ faTrash } style={ { color: "red", cursor: "pointer" } } />
+                                            <FontAwesomeIcon icon={ faTrash } style={ { color: "red", cursor: "pointer" } } onClick={(onClickDelete(item._id, task._id, task.taskName), toggleDeleteModal)}/>
                                         </div>
                                     }
                                 </div>
