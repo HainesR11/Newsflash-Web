@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, ModalFooter, ModalHeader } from "reactstrap";
 import styledComponents from 'styled-components';
-import { DeleteTask } from '../../api/ApiActions';
+import { DeleteTask, GetAllActions } from '../../api/ApiActions';
 import { useModalStore } from '../../store';
 
 const ModalButton = styledComponents.button`
@@ -25,13 +25,25 @@ const DeleteModal = () => {
     const setTaskId = useModalStore((state) => state.setTaskId)
     const setTaskName = useModalStore((state) => state.setTaskName)
 
-    const onclick = (actionId, taskid) => {
-        DeleteTask(actionId, taskid)
+    const cleardata = () => {
         setId("")
         setTaskId("")
         setTaskName("")
     }
 
+    const onclick = async (actionId, taskid) => {
+        await DeleteTask(actionId, taskid)
+        GetAllActions()
+        cleardata()
+    }
+
+    const onclicKCancel = () =>{
+        toggleDeleteModal()
+        cleardata()
+    } 
+    console.log(id, " - id")
+    console.log(taskId, " - taskId")
+    console.log(taskName, " - taskName")
     return (
         <Modal isOpen={ deleteModal }>
             <ModalHeader style={ { display: "flex", justifyContent: "center" } }>
@@ -42,8 +54,8 @@ const DeleteModal = () => {
                 <div>{ taskName }</div>
             </div>
             <ModalFooter style={ { display: "flex", justifyContent: "space-around" } }>
-                <ModalButton onClick={() => (DeleteTask(id, taskId), toggleDeleteModal())}>Yes</ModalButton>
-                <ModalButton onClick={ toggleDeleteModal }>No</ModalButton>
+                <ModalButton onClick={() => (onclick(id, taskId), toggleDeleteModal())}>Yes</ModalButton>
+                <ModalButton onClick={ () => onclicKCancel() }>No</ModalButton>
             </ModalFooter>
         </Modal>
     )

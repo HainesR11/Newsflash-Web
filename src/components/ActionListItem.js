@@ -104,7 +104,7 @@ const ActionListItem = ({ item, tasks, auth }) => {
                                     { auth.isAdmin &&
                                         <div style={ { width: "5vw", display: "flex", justifyContent: "space-around" } } >
                                             <FontAwesomeIcon icon={ faEdit } style={ { cursor: "pointer" } } />
-                                            <FontAwesomeIcon icon={ faTrash } style={ { color: "red", cursor: "pointer" } } onClick={(onClickDelete(item._id, task._id, task.taskName), toggleDeleteModal)}/>
+                                            <FontAwesomeIcon icon={ faTrash } style={ { color: "red", cursor: "pointer" } } onClick={() => (onClickDelete(item._id, task._id, task.taskName), toggleDeleteModal())}/>
                                         </div>
                                     }
                                 </div>

@@ -37,10 +37,10 @@ export const completeTask = async (id, date, user, taskId) => {
 
 export const DeleteTask = async (id, taskId) => {
     try {
-        await newsflashServices.patch("/api/tasks/" + id + "/" + taskId)
-        return console.log("action Deleted")
+        const action = await newsflashServices.delete("/api/tasks/" + id + "/" + taskId)
+        return console.log("Task deleted")
     }
     catch (err) {
-        console.log("this has hit an errre")
+        console.log("This has hit an error", err)
     }
 }

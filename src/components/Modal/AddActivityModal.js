@@ -63,7 +63,7 @@ const optionStyle = {
     })
 }
 
-const AddActivityModal = (show) => {
+const AddActivityModal = () => {
 
 
     const [activityName, setActivityName] = useState('')
@@ -76,6 +76,7 @@ const AddActivityModal = (show) => {
     const [priority, setPriority] = useState()
     const [assigned, setAssigned] = useState([])
 
+    const show = useModalStore((state) => state.showAddModal)
     const toggle = useModalStore((state) => state.toggleAddModal)
     const buckets = useActionStore((state) => state.buckets)
     const toggleTaskModal = useModalStore((state) => state.toggleTaskModaal)
